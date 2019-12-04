@@ -24,7 +24,7 @@ In this repo we will stream crawl and save data from Twitter using Apache Spark 
     * bash start-slave.sh spark://HOST:PORT
 Your Spark installation is ready to use. **Check 'jps' and you'll see master and slave running.**
 
-### Step 2: Setting up cassandra
+### Step 2: Setting up Cassandra
 
 * Add the Cassandra Repository File:
     * echo "deb http://www.apache.org/dist/cassandra/debian 311x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
@@ -36,7 +36,8 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
     * sudo apt install cassandra
 * Start Cassandra:
     * sudo systemctl start cassandra
-### Step 3: Anaconda
+    
+### Step 3: Setting up Anaconda
 
 * Install anaconda(We will be using python 2.7):
    * curl -O https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh
