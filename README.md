@@ -1,11 +1,11 @@
 # Twitter-streaming
 In this repo we will stream crawl and save data from Twitter using Apache Spark and Cassandra.
 
-# Follow these steps to setup spark (On any Linux Platfrom)
+## Follow these steps to setup spark (On any Linux Platfrom)
 
-## Java Installation is mandatory for saprk. Check installation by the command 'jps'. It must output jps.
+### Java Installation is mandatory for spark. Check installation by the command 'jps'. It must output jps.
 
-## STEP 1:
+### STEP 1:
 a. Download spark from https://www.apache.org/dyn/closer.lua/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz (We are using the spark version 2.4.4 and hadoop version 2.7 as of Dec 2019)
 b. Extract the tar file to a specific directory(your choice).
 c. Now edit the .bashrc file(vim ~/.bashrc) put this two lines(replace the <path to dir> to your path of installation).
