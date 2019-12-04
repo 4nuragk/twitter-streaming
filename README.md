@@ -13,12 +13,12 @@ c. Now edit the .bashrc file(vim ~/.bashrc) put this two lines(replace the <path
     export SPARK_HOME=<path to the dir>/spark-2.4.4-bin-hadoop2.7
     export PATH=$SPARK_HOME/bin:$PATH
 d. source the bashrc
-    source ~/.bashrc
+    # source ~/.bashrc
 e. cd to the spark dir/sbin
-    cd $SPARK_HOME/sbin
+    # cd $SPARK_HOME/sbin
 f. start the master. 
-    bash start-master.sh
+    # bash start-master.sh
 g. go to your localhost and port 8080(http://localhost:8080) in your browser and copy the spark master url which will be in the format spark://HOST:PORT
 h. now in your sbin dir, start slave (using the master url you copied):
-    bash start-slave.sh spark://HOST:PORT
+    # bash start-slave.sh spark://HOST:PORT
 Your Spark installation is ready to use. Check 'jps' and you'll see master and slave running.
