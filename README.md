@@ -3,7 +3,7 @@ In this repo we will stream crawl and save data from Twitter using Apache Spark 
 
 ## Follow these steps to setup your system (Linux Platfrom only)
 
-**Java Installation is mandatory. Check installation by the command 'jps'. It must output jps**
+<span style="color:blue">**Java Installation is mandatory. Check installation by the command 'jps'. It must output jps**</span>
 
 ### STEP 1: Setting up Spark
 * Download spark from https://www.apache.org/dyn/closer.lua/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz (We are using the spark version 2.4.4 and hadoop version 2.7 as of Dec 2019)<br>
