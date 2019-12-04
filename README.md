@@ -26,7 +26,7 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
 ### Step 2: Setting up cassandra
 
 * Add the Cassandra Repository File:
-    * echo "deb http://www.apache.org/dist/cassandra/debian 39x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+    * echo "deb http://www.apache.org/dist/cassandra/debian 311x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
 * Add the GPG Key:
     * sudo apt install curl
     * curl https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
