@@ -86,9 +86,18 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
 
 ### Running crawler and streaming:
 
+* Edit the track_crawler.py and put your credentials in line 217 & 299
+* Edit the update_trends.py and put your creadentials in line 42
+
+
+
 1. cd to streaming diretory
 2. Run this command:<br>
 	a. MASTER=(put the master url you copied earlier)<br>
 	b.	
 ${SPARK_HOME}/bin/spark-submit         --master ${MASTER}    --packages com.datastax.spark:spark-cassandra-connector_2.11:2.4.2           streaming.py &>out
-
+3. In a new tab, run these from crawler dir:
+	a. python update_trends.py
+	b. python track_crawler.py
+	
+Open the out file to see the results.
