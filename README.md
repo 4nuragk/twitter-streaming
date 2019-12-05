@@ -97,7 +97,7 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
 	b.	
 ${SPARK_HOME}/bin/spark-submit         --master ${MASTER}    --packages com.datastax.spark:spark-cassandra-connector_2.11:2.4.2           streaming.py &>out
 3. In a new tab, run these from crawler dir:
-	a. python update_trends.py
-	b. python track_crawler.py
+	a. python update_trends.py<br>
+	b. python track_crawler.py<br>
 	
 Open the out file to see the results.
