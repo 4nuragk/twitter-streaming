@@ -42,37 +42,6 @@ filename =str(d1)+"-t.json"
 
 final_dict = OrderedDict()
 
-f = open('42K_5_worddict.pkl', 'rb')																																																																																																																																																																																																																																																																																																																																																																																																																							
-dictionary = pickle.load(f)
-f.close()
-
-# load json and create model
-json_file = open('new_model_CNN_v2.json', 'r')
-loaded_model_json = json_file.read()
-json_file.close()
-loaded_model = model_from_json(loaded_model_json)
-# load weights into new model
-loaded_model.load_weights("new_model_CNN_v2.h5")
-print("Loaded model from disk")
-loaded_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-#load json for security and create model
-json_file_security = open('security.json', 'r')
-loaded_model_json_security = json_file_security.read()
-json_file_security.close()
-loaded_model_security = model_from_json(loaded_model_json_security)
-
-loaded_model_security.load_weights("security.h5")
-print("loaded security model from disk")
-loaded_model_security.compile(loss='categorical_crossentropy', optimizer='adam',metrics=['accuracy'])
-
-
-sample=np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 36, 451, 35505, 27754, 13695, 3523, 1, 568, 1, 3115, 1, 9792, 451, 27754, 13695, 64, 763, 1]])
-result=loaded_model.predict(sample)
-print(result[0])
-result_sec = loaded_model_security.predict(sample)
-print(result_sec[0])
-
 def extract_words(text):
 	result = []
 	stop = [u'i', u'me', u'my', u'myself', u'we', u'our', u'ours', u'ourselves', u'you', u"you're", u"you've", u"you'll", u"you'd", u'your', u'yours', u'yourself', u'yourselves', u'he', u'him', u'his', u'himself', u'she', u"she's", u'her', u'hers', u'herself', u'it', u"it's", u'its', u'itself', u'they', u'them', u'their', u'theirs', u'themselves', u'what', u'which', u'who', u'whom', u'this', u'that', u"that'll", u'these', u'those', u'am', u'is', u'are', u'was', u'were', u'be', u'been', u'being', u'have', u'has', u'had', u'having', u'do', u'does', u'did', u'doing', u'a', u'an', u'the', u'and', u'but', u'if', u'or', u'because', u'as', u'until', u'while', u'of', u'at', u'by', u'for', u'with', u'about', u'against', u'between', u'into', u'through', u'during', u'before', u'after', u'above', u'below', u'to', u'from', u'up', u'down', u'in', u'out', u'on', u'off', u'over', u'under', u'again', u'further', u'then', u'once', u'here', u'there', u'when', u'where', u'why', u'how', u'all', u'any', u'both', u'each', u'few', u'more', u'most', u'other', u'some', u'such', u'no', u'nor', u'not', u'only', u'own', u'same', u'so', u'than', u'too', u'very', u's', u't', u'can', u'will', u'just', u'don', u"don't", u'should', u"should've", u'now', u'd', u'll', u'm', u'o', u're', u've', u'y', u'ain', u'aren', u"aren't", u'couldn', u"couldn't", u'didn', u"didn't", u'doesn', u"doesn't", u'hadn', u"hadn't", u'hasn', u"hasn't", u'haven', u"haven't", u'isn', u"isn't", u'ma', u'mightn', u"mightn't", u'mustn', u"mustn't", u'needn', u"needn't", u'shan', u"shan't", u'shouldn', u"shouldn't", u'wasn', u"wasn't", u'weren', u"weren't", u'won', u"won't", u'wouldn', u"wouldn't", 'sir','day','title','shri','crore','day','time',"a", "about", "above", "above", "across", "after", "afterwards", "again", "against", "all", "almost", "alone", "along", "already", "also","although","always","am","among", "amongst", "amoungst", "amount",  "an", "and", "another", "any","anyhow","anyone","anything","anyway", "anywhere", "are", "around", "as",  "at", "back","be","became", "because","become","becomes", "becoming", "been", "before", "beforehand", "behind", "being", "below", "beside", "besides", "between", "beyond", "bill", "both", "bottom","but", "by", "call", "can", "cannot", "cant", "co", "con", "could", "couldnt", "cry", "de", "describe", "detail", "do", "done", "down", "due", "during", "each", "eg", "eight", "either", "eleven","else", "elsewhere", "empty", "enough", "etc", "even", "ever", "every", "everyone", "everything", "everywhere", "except", "few", "fifteen", "fify", "fill", "find", "fire", "first", "five", "for", "former", "formerly", "forty", "found", "four", "from", "front", "full", "further", "get", "give", "go", "had", "has", "hasnt", "have", "he", "hence", "her", "here", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "him", "himself", "his", "how", "however", "hundred", "ie", "if", "in", "inc", "indeed", "interest", "into", "is", "it", "its", "itself", "keep", "last", "latter", "latterly", "least", "less", "ltd", "made", "many", "may", "me", "meanwhile", "might", "mill", "mine", "more", "moreover", "most", "mostly", "move", "much", "must", "my", "myself", "name", "namely", "neither", "never", "nevertheless", "next", "nine", "no", "nobody", "none", "noone", "nor", "not", "nothing", "now", "nowhere", "of", "off", "often", "on", "once", "one", "only", "onto", "or", "other", "others", "otherwise", "our", "ours", "ourselves", "out", "over", "own","part", "per", "perhaps", "please", "put", "rather", "re", "same", "see", "seem", "seemed", "seeming", "seems", "serious", "several", "she", "should", "show", "side", "since", "sincere", "six", "sixty", "so", "some", "somehow", "someone", "something", "sometime", "sometimes", "somewhere", "still", "such", "system", "take", "ten", "than", "that", "the", "their", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "therefore", "therein", "thereupon", "these", "they", "thickv", "thin", "third", "this", "those", "though", "three", "through", "throughout", "thru", "thus", "to", "together", "too", "top", "toward", "towards", "twelve", "twenty", "two", "un", "under", "until", "up", "upon", "us", "very", "via", "was", "we", "well", "were", "what", "whatever", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whoever", "whole", "whom", "whose", "why", "will", "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself", "yourselves", "the","&amp;","?",'!',',',';',':','.','\t','$','/','|','amp','url']
@@ -245,10 +214,10 @@ def find_keyword(tweet_text):
 
 class MyStreamListener(StreamListener):	
 	
-	consumer_key = ""
-	consumer_secret = ""
-	access_token = ""
-	access_token_secret = ""  
+	# consumer_key = ""
+	# consumer_secret = ""
+	# access_token = ""
+	# access_token_secret = ""  
 
 
 	#Sets up connection with OAuth
@@ -270,19 +239,6 @@ class MyStreamListener(StreamListener):
 				if not isinstance(full_tweet['retweeted_status'], dict):
 					full_tweet['retweeted_status']=full_tweet['retweeted_status'].__dict__ 
 				retweeted_text = full_tweet['retweeted_status']['text']
-				
-				#rt_sentiment
-				clean_rtweet = extract_words(retweeted_text)
-				train_feature_rt = grab_data(clean_rtweet)
-				flatten_data_rt = flatten(train_feature_rt)
-				padded_data_rt = pad(flatten_data_rt,0,30)
-
-				new_padded_data_rt = np.array([padded_data_rt])
-				result_rt = loaded_model.predict(new_padded_data_rt)
-
-				rt_sentiment_value = result_rt[0].argmax(0)
-				full_tweet['retweeted_status']['sentiment'] = rt_sentiment_value
-			
 
 
 			if full_tweet.has_key('quoted_status'):
@@ -293,52 +249,18 @@ class MyStreamListener(StreamListener):
 				full_tweet['quoted_status']['keyword']=result_quoted_keyword
 
 
-				#qt_sentiment
-
-				clean_qtweet = extract_words(quoted_text)
-				train_feature_qt = grab_data(clean_qtweet)
-				flatten_data_qt = flatten(train_feature_qt)
-				padded_data_qt = pad(flatten_data_qt,0,30)
-
-				new_padded_data_qt = np.array([padded_data_qt])
-				result_qt = loaded_model.predict(new_padded_data_qt)
-
-				qt_sentiment_value = result_qt[0].argmax(0)
-				full_tweet['quoted_status']['sentiment'] = qt_sentiment_value
-				print(str(qt_sentiment_value))
-
-
 
 			tweet_text = full_tweet['text']	
 			print(tweet_text)
-			# self.client_socket.send(data)
-			clean_tweets = extract_words(tweet_text)
-			train_feature = grab_data(clean_tweets)
-			flatten_data = flatten(train_feature)
-			padded_data = pad(flatten_data,0,30)
-			#print(len(padded_data))
-			padded_data = np.array([padded_data])
-			result =  loaded_model.predict(padded_data)
-			#print(padded_data,result[0])
-			# b = np.zeros((3,), dtype=int)
-			print(result[0],result[0].argmax(0))
-			sentiment_value=result[0].argmax(0)
-			full_tweet['sentiment']=sentiment_value
-			result_keyword = find_keyword(tweet_text)
-			full_tweet['keyword']=result_keyword
 
 
-			#security
-			result_security = loaded_model_security.predict(padded_data)
-			print('security',result_security[0],result_security[0].argmax(0))
-			security_value = result_security[0].argmax(0)
-			full_tweet['security'] = security_value
-			
+			# result_keyword = find_keyword(tweet_text)
+			# full_tweet['keyword']=result_keyword
 
 			#print(full_tweet)
 			data=json.dumps(full_tweet,encoding="utf-8")
 			self.client_socket.send(data.encode("utf-8")+ '\n')
-			write_tweets(data.encode("utf-8")+ '\n')
+			#write_tweets(data.encode("utf-8")+ '\n')
 		except Exception, e:
 			logger.info("Error in on_data()------->")
 			
@@ -374,11 +296,10 @@ class MyStreamListener(StreamListener):
 class twitterHelper:	
 	
 
-	consumer_key = ""
-	consumer_secret = ""
-	access_token = ""
-	access_token_secret = ""  
-
+	# consumer_key = ""
+	# consumer_secret = ""
+	# access_token = ""
+	# access_token_secret = ""  
 
 	
 	#Sets up connection with OAuth
@@ -454,7 +375,7 @@ if __name__ == '__main__':
 	## get home directory....
 	#home_directory = os.environ['HOME']
 	#tweets_d = home_directory + "/store/streaming_tweets/track_tweets/"
-	tweets_d = "/home/hemanta/store/streaming_tweets/track_tweets/"
+	#tweets_d = "/home/hemanta/store/streaming_tweets/track_tweets/"
 
 	print("test")
 	TCP_IP = "localhost"

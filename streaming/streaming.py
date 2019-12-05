@@ -40,7 +40,7 @@ from pyspark.sql.types import *
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-conf = SparkConf().set("spark.cassandra.connection.host", "127.0.0.1")\
+conf = SparkConf().set("spark.cassandra.connection.host", "localhost")\
 .set("spark.cassandra.connection.keep_alive_ms", "12000")\
 .set("spark.cassandra.input.consistency.level","LOCAL_ONE")\
 .set("spark.cassandra.output.consistency.level","LOCAL_ONE")\
@@ -91,7 +91,7 @@ def process2(time,rdd):
 		print("done")
 
 
-def get_hashtag(twdata):
+def get_hashtag(json_dictionary):
 
 	combine_hashtags_list=[]
 	full_text = json_dictionary['text']
@@ -101,7 +101,6 @@ def get_hashtag(twdata):
 	truncated = json_dictionary['truncated']
 	
 	try:
-		sentiment = json_dictionary['sentiment']
 		if truncated:
 
 			extended_tweet_dict = json_dictionary['extended_tweet']
@@ -125,9 +124,8 @@ def get_hashtag(twdata):
 					combine_hashtags_list.append('#'+ht)
 					combine_hashtags_list=list(set(combine_hashtags_list))
 		
-		hashtag_combined_list =[sentiment] * len(combine_hashtags_list)
 
-		combine_sentiment_hash = zip([full_text],combine_hashtags_list,hashtag_combined_list)
+		combine_sentiment_hash = zip([full_text],combine_hashtags_list)
 
 		return combine_sentiment_hash
 
@@ -148,7 +146,6 @@ def get_hashtag_tweetid(json_dictionary):
 	truncated = json_dictionary['truncated']
 	# try:
 	tweet_id = json_dictionary['id_str']
-	sentiment = json_dictionary['sentiment']
 	if truncated:
 
 		extended_tweet_dict = json_dictionary['extended_tweet']
@@ -170,14 +167,62 @@ def get_hashtag_tweetid(json_dictionary):
 				combine_hashtags_list.append('#'+ht)
 				combine_hashtags_list=list(set(combine_hashtags_list))
 
-	hashtag_combined_list =[sentiment] * len(combine_hashtags_list)
 
-	combine_sentiment_hash = zip([full_text],combine_hashtags_list,sentiment_list)
+	combine_sentiment_hash = zip([full_text],combine_hashtags_list)
 	ids =[[tweet_id]] * len(combine_sentiment_hash)
 
 	combine_sentiment_ids_hash = zip(combine_sentiment_hash,ids)
 
 	return combine_sentiment_ids_hash
+
+
+
+	#((u'RT @IsmailMehak: W', u'#IAmWithSidShukla'), (1, [u'1202628470611689473']))
+
+
+def checker_tweet(data):
+
+	try:
+
+		check_data1 = data[0][0]#text
+		check_data2 = data[0][1]#tag
+		check_data4 = data[1][0]#count
+		check_data5 = data[1][1]#tweetid
+
+		return data
+
+	except: 
+		return ((u'dummy', u'dummy'), (1, [u'dummy']))
+
+def window_hashtag_rdd(time,rdd):
+
+	print("----------- %s -----------" % str(time))
+	start = timer()
+	print("10 sec window")
+
+	try:
+		if not rdd.isEmpty():		#co_occuring_list = rdd.map(get_co_occuring_hash_tag)
+			sql_context = get_sql_context_instance(rdd.context)
+			#spark = SparkSession.builder.appName("SparkCassandra1").config(conf=conf).getOrCreate()
+			today_date = datetime.datetime.utcnow().date()
+			today_time = str(time.strftime('%H:%M:%S'))
+			check_rdd = rdd.map(checker_tweet)
+			row_rdd = check_rdd.map(lambda w: Row(created_date=today_date,created_time=today_time, tweet_text=w[0][0], token_name=w[0][1], count=w[1][0],tweetid_list=w[1][1]))
+			window_hashtag_rdd = sql_context.createDataFrame(row_rdd)
+			# window_hashtag_rdd.write.format("org.apache.spark.sql.cassandra")\
+			# .mode('append')\
+			# .options(table="", keyspace="")\
+			# .save()
+			sql_context.clearCache()
+			window_hashtag_rdd.show()
+			end_time = timer()
+			time_taken = end_time - start
+			print("The time taken to count sensitive is %s",time_taken)
+
+	except:
+
+		e = sys.exc_info()[0]
+		print("Error: %s" % e)
 
 
 def main():
@@ -186,10 +231,10 @@ def main():
 	newstream1 = dataStream1.map(lambda recieved: json.loads(recieved))
 	
 	########################################################################################################################
-	total_hashtags=combinestream.map(get_hashtag)
+	total_hashtags=newstream1.map(get_hashtag)
 	total_hashtags_index = total_hashtags.flatMap(lambda xs: [(x, 1) for x in xs]) 
 
-	tweet_id_list_with_hashtag = combinestream.map(get_hashtag_tweetid)
+	tweet_id_list_with_hashtag = newstream1.map(get_hashtag_tweetid)
 	combine_tweet_id_list_with_hashtag = tweet_id_list_with_hashtag.flatMap(lambda xs:[(x[0], x[1]) for x in xs if x!=[]])
 
 	count_hashtags = total_hashtags_index.reduceByKey(lambda a,b:a+b)
@@ -197,5 +242,20 @@ def main():
 
 	id_hashtag_union = count_hashtags.union(count_hashtags_id)
 	combine_hashtag_id = id_hashtag_union.reduceByKey(lambda a,b:(a,b))
-	combine_hashtag_id.foreachRDD(process1)
+	combine_hashtag_id.foreachRDD(window_hashtag_rdd)
 	#########################################################################################################################
+
+	end_time = timer()
+	print("This is the start time",start_time)
+	print("This is the end time",end_time)
+	time_elapsed = start_time-end_time
+	print("Time elpsed is",time_elapsed)
+	ssc.start()
+	ssc.awaitTermination()
+
+
+		
+if __name__=='__main__':
+
+	main()
+	
