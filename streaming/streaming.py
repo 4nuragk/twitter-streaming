@@ -168,12 +168,12 @@ def get_hashtag_tweetid(json_dictionary):
 				combine_hashtags_list=list(set(combine_hashtags_list))
 
 
-	combine_sentiment_hash = zip([full_text],combine_hashtags_list)
-	ids =[[tweet_id]] * len(combine_sentiment_hash)
+	combine_hash = zip([full_text],combine_hashtags_list)
+	ids =[[tweet_id]] * len(combine_hash)
 
-	combine_sentiment_ids_hash = zip(combine_sentiment_hash,ids)
+	combine_ids_hash = zip(combine_hash,ids)
 
-	return combine_sentiment_ids_hash
+	return combine_ids_hash
 
 
 
@@ -209,10 +209,10 @@ def window_hashtag_rdd(time,rdd):
 			check_rdd = rdd.map(checker_tweet)
 			row_rdd = check_rdd.map(lambda w: Row(created_date=today_date,created_time=today_time, tweet_text=w[0][0], token_name=w[0][1], count=w[1][0],tweetid_list=w[1][1]))
 			window_hashtag_rdd = sql_context.createDataFrame(row_rdd)
-			# window_hashtag_rdd.write.format("org.apache.spark.sql.cassandra")\
-			# .mode('append')\
-			# .options(table="", keyspace="")\
-			# .save()
+			window_hashtag_rdd.write.format("org.apache.spark.sql.cassandra")\
+			.mode('append')\
+			.options(table="hashtag_test", keyspace="test_keyspace")\
+			.save()
 			sql_context.clearCache()
 			window_hashtag_rdd.show()
 			end_time = timer()
