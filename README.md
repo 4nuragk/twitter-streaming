@@ -36,6 +36,9 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
     * sudo apt install cassandra
 * Start Cassandra:
     * sudo systemctl start cassandra
+* Check installation:
+    * cqlsh localhost
+
     
 ### Step 3: Setting up Anaconda
 
