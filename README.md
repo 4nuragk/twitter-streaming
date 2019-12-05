@@ -3,7 +3,25 @@ In this repo we will stream crawl and save data from Twitter using Apache Spark 
 
 ## Follow these steps to setup your system (Linux Platfrom only)
 
-**Java Installation is mandatory. Check installation by the command 'jps'. It must output jps**
+**Java Installation is mandatory. Check installation by:**
+
+* jps
+   * it must output jps
+* java -version
+   * it must output the version
+* echo $JAVA_HOME
+   * it must output the path
+   
+* If not, follow these steps: 
+   * download: https://drive.google.com/open?id=1vq9fHY0UgRHFxd9PvH3Msu85FcpjZWWb
+   * unzip the file
+   * sudo scp java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64 /usr/lib/jvm
+   * Edit ~/.bashrc and add these lines:<br>
+         * export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64"<br>
+         * export PATH=$JAVA_HOME/bin:$PATH<br>
+         * export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar<br>
+
+
 
 ### STEP 1: Setting up Spark
 
@@ -38,6 +56,8 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
     * sudo systemctl start cassandra
 * Check installation:
     * cqlsh localhost
+* Import keyspace schema
+    * cqlsh localhost -f schema.cql
 
     
 ### Step 3: Setting up Anaconda
