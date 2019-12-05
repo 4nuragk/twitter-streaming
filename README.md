@@ -20,6 +20,7 @@ In this repo we will stream crawl and save data from Twitter using Apache Spark 
          * export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64"<br>
          * export PATH=$JAVA_HOME/bin:$PATH<br>
          * export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar<br>
+   * source ~/.bashrc
 
 
 
