@@ -38,10 +38,10 @@ def get_available_trends(api, place):
 
 
 if __name__ == '__main__':
-	consumer_key = "DeCjdJeNZnyLXnAsAptnlkf3l"
-	consumer_secret = "a3QRWUkHbksGxnxTvnf38FFv4ZliJit6LDyqHWwakuARzMubHt"
-	access_token = "833992697157390336-1pZFbsRdDiokB8tXdQjdGmVXlTPHgfi"
-	access_token_secret = "6UhIHY2xLwu4CsOIDdjDTOobXLo63BG1zXM1AG98XjJoh"
+	consumer_key = ""
+	consumer_secret = ""
+	access_token = ""
+	access_token_secret = ""
 
 
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
