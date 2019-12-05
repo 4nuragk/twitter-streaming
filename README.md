@@ -4,7 +4,7 @@ In this repo we will stream crawl and save data from Twitter using Apache Spark 
 ## Follow these steps to setup your system (Linux Platfrom only)
 
 * First of all, head on to https://developer.twitter.com/en/apply and apply for developer account.
-* copy all the credentials and save it in a file.
+* Copy all the credentials and save it in a file.
 * Credentials include:
 	1. consumer_key
 	2. consumer_secret
