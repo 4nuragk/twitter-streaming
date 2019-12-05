@@ -89,5 +89,5 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
 2. Run this command:<br>
 	a. MASTER=(put the master url you copied earlier)<br>
 	b.	
-${SPARK_HOME}/bin/spark-submit         --master ${MASTER}         --driver-cores 16          --driver-memory 2g         --total-executor-cores 56   --executor-cores 8         --executor-memory 2g   --packages com.datastax.spark:spark-cassandra-connector_2.11:2.4.2           streaming.py &>out
+${SPARK_HOME}/bin/spark-submit         --master ${MASTER}    --packages com.datastax.spark:spark-cassandra-connector_2.11:2.4.2           streaming.py &>out
 
