@@ -11,7 +11,7 @@ In this repo we will stream crawl and save data from Twitter using Apache Spark 
 	3. access_token
 	4. access_token_secret
 
-
+-----------------------------------------------------------------------------------------------------------------------------
 
 **Java Installation is mandatory. Check installation by:**
 
@@ -32,7 +32,7 @@ In this repo we will stream crawl and save data from Twitter using Apache Spark 
          * export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar<br>
    * source ~/.bashrc
 
-
+-----------------------------------------------------------------------------------------------------------------------------
 
 ### STEP 1: Setting up Spark
 
