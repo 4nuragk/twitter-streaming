@@ -45,4 +45,5 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
    * conda env create -f environment.yml
 * Activate the environment:
    * conda activate spark
+   * conda install -c anaconda pattern
 
