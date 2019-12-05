@@ -3,7 +3,36 @@ In this repo we will stream crawl and save data from Twitter using Apache Spark 
 
 ## Follow these steps to setup your system (Linux Platfrom only)
 
-**Java Installation is mandatory. Check installation by the command 'jps'. It must output jps**
+* First of all, head on to https://developer.twitter.com/en/apply and apply for developer account.
+* Copy all the credentials and save it in a file.
+* Credentials include:
+	1. consumer_key
+	2. consumer_secret
+	3. access_token
+	4. access_token_secret
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+**Java Installation is mandatory. Check installation by:**
+
+* jps
+   * it must output jps
+* java -version
+   * it must output the version
+* echo $JAVA_HOME
+   * it must output the path
+   
+* If not, follow these steps: 
+   * download: https://drive.google.com/open?id=1vq9fHY0UgRHFxd9PvH3Msu85FcpjZWWb
+   * unzip the file
+   * sudo scp java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64 /usr/lib/jvm
+   * Edit ~/.bashrc and add these lines:<br>
+         * export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64"<br>
+         * export PATH=$JAVA_HOME/bin:$PATH<br>
+         * export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar<br>
+   * source ~/.bashrc
+
+-----------------------------------------------------------------------------------------------------------------------------
 
 ### STEP 1: Setting up Spark
 
@@ -38,15 +67,37 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
     * sudo systemctl start cassandra
 * Check installation:
     * cqlsh localhost
+* Import keyspace schema
+    * cqlsh localhost -f schema.cql
 
     
 ### Step 3: Setting up Anaconda
 
 * Install anaconda(We will be using python 2.7):
    * curl -O https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh
+   * source ~/.bashrc
 * Create environment and install dependencies:
    * conda env create -f environment.yml
 * Activate the environment:
-   * conda activate spark
+   * conda activate venv
    * conda install -c anaconda pattern
 
+----------------------------------------------------------------------------------------------------------------------------
+
+### Running crawler and streaming:
+
+* Edit the track_crawler.py and put your credentials in line 217 & 299
+* Edit the update_trends.py and put your creadentials in line 42
+
+
+
+1. cd to streaming diretory
+2. Run this command:<br>
+	a. MASTER=(put the master url you copied earlier)<br>
+	b.	
+${SPARK_HOME}/bin/spark-submit         --master ${MASTER}    --packages com.datastax.spark:spark-cassandra-connector_2.11:2.4.2           streaming.py &>out
+3. In a new tab, run these from crawler dir:
+	a. python update_trends.py
+	b. python track_crawler.py
+	
+Open the out file to see the results.
