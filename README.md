@@ -78,6 +78,16 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
 * Create environment and install dependencies:
    * conda env create -f environment.yml
 * Activate the environment:
-   * conda activate spark
+   * conda activate venv
    * conda install -c anaconda pattern
+
+----------------------------------------------------------------------------------------------------------------------------
+
+### Running crawler and streaming:
+
+1. cd to streaming diretory
+2. Run this command:<br>
+	a. MASTER=(put the master url you copied earlier)<br>
+	b.	
+${SPARK_HOME}/bin/spark-submit         --master ${MASTER}         --driver-cores 16          --driver-memory 2g         --total-executor-cores 56   --executor-cores 8         --executor-memory 2g   --packages com.datastax.spark:spark-cassandra-connector_2.11:2.4.2           streaming.py &>out
 
