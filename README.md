@@ -75,6 +75,7 @@ Your Spark installation is ready to use. **Check 'jps' and you'll see master and
 
 * Install anaconda(We will be using python 2.7):
    * curl -O https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh
+   * source ~/.bashrc
 * Create environment and install dependencies:
    * conda env create -f environment.yml
 * Activate the environment:
